@@ -5,11 +5,11 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 
@@ -19,12 +19,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private BannerAdapter bannerAdapter;
     private int currentItem = 0;
     private Handler handler = new Handler();
-    private final Runnable mTicker = new Runnable() {
+    private final Runnable ticker = new Runnable() {
         public void run() {
             long now = SystemClock.uptimeMillis();
             long next = now + (DELAY_TIME - now % DELAY_TIME);
 
-            handler.postAtTime(mTicker, next);//延迟5秒再次执行runnable,就跟计时器一样效果
+            handler.postAtTime(ticker, next);
 
             currentItem++;
             pager.setCurrentItem(currentItem);
@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initPoint();
 
         //设置当前页
-
         pager.setCurrentItem(currentItem);
 
-        handler.postDelayed(mTicker, DELAY_TIME);
+        handler.postDelayed(ticker, DELAY_TIME);
 
     }
 
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-
+        Toast.makeText(getApplicationContext(),"点击："+currentItem%bannerAdapter.getBanners().length+"位置",Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -92,10 +91,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setPointSelect(int selectItems) {
 
-        Log.d("111","selectItems:"+selectItems%bannerAdapter.getBanners().length);
         for (int i = 0; i < bannerAdapter.getBanners().length; i++) {
             ImageView imageView = (ImageView) point.getChildAt(i);
-            imageView.setBackgroundDrawable(null);//先把背景设置成无
+            imageView.setBackgroundDrawable(null);
             if (i == (selectItems%bannerAdapter.getBanners().length)) {
                 imageView.setImageResource(R.drawable.point_select);
             } else {
@@ -110,10 +108,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onPageScrollStateChanged(int state) {
 
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(mTicker);
+        handler.removeCallbacks(ticker);
     }
 }

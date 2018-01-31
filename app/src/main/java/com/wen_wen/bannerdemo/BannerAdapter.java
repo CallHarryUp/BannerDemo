@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 /**
- * Created by WeLot on 2018/1/30.
+ * Created by Wen_wen on 2018/1/30.
  */
 
 public class BannerAdapter extends PagerAdapter {
@@ -33,7 +33,7 @@ public class BannerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        position %= banners.length;//去余 position的取值范围是length-1
+        position %= banners.length;
         ImageView banner = new ImageView(context);
         banner.setImageResource(banners[position]);
         banner.setScaleType(ImageView.ScaleType.CENTER_CROP);
